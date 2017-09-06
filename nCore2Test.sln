@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "nCore2Test", "nCore2Test.cs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Digipolis.Web", "..\web_aspnetcore\src\Digipolis.Web\Digipolis.Web.csproj", "{95159456-04D7-43E7-A685-ABD91429E715}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Digipolis.DataAccess", "..\dataaccess_aspnetcore\src\Digipolis.DataAccess\Digipolis.DataAccess.csproj", "{3E52AEC2-6DE3-4FCB-A4D4-16960B28F395}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Digipolis.DataAccess", "Digipolis.DataAccess\Digipolis.DataAccess.csproj", "{3E52AEC2-6DE3-4FCB-A4D4-16960B28F395}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Digipolis.DataAccess.UnitTests", "..\dataaccess_aspnetcore\test\Digipolis.DataAccess.UnitTests\Digipolis.DataAccess.UnitTests.csproj", "{C9EE47B6-271D-4FA8-8FDB-CB723A0EB1B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Digipolis.DataAccess.UnitTests", "Digipolis.DataAccess.UnitTests\Digipolis.DataAccess.UnitTests.csproj", "{C9EE47B6-271D-4FA8-8FDB-CB723A0EB1B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

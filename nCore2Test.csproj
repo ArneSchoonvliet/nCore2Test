@@ -10,6 +10,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Digipolis.DataAccess.UnitTests\**" />
+    <Compile Remove="Digipolis.DataAccess\**" />
+    <Content Remove="Digipolis.DataAccess.UnitTests\**" />
+    <Content Remove="Digipolis.DataAccess\**" />
+    <EmbeddedResource Remove="Digipolis.DataAccess.UnitTests\**" />
+    <EmbeddedResource Remove="Digipolis.DataAccess\**" />
+    <None Remove="Digipolis.DataAccess.UnitTests\**" />
+    <None Remove="Digipolis.DataAccess\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -29,7 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\dataaccess_aspnetcore\src\Digipolis.DataAccess\Digipolis.DataAccess.csproj" />
+    <ProjectReference Include="Digipolis.DataAccess\Digipolis.DataAccess.csproj" />
     <ProjectReference Include="..\web_aspnetcore\src\Digipolis.Web\Digipolis.Web.csproj" />
   </ItemGroup>
 
