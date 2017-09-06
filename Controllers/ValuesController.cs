@@ -3,42 +3,66 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using nCore2Test.DataAccess.Entities;
+using Digipolis.DataAccess;
 
 namespace nCore2Test.Controllers
 {
-    [Route("api/[controller]")]
-    public class ValuesController : Controller
+    [Route("[controller]")]
+    public class CarsController : Controller
     {
+        public CarsController(IUowProvider uowProvider)
+        {
+            _uowProvider = uowProvider;
+        }
+
+        private readonly IUowProvider _uowProvider;
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+
+            using (var uow = _uowProvider.CreateUnitOfWork())
+            {
+                var repo = uow.GetRepository<Car>();
+                return Ok(await repo.GetAllAsync()); 
+            }
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            using (var uow = _uowProvider.CreateUnitOfWork())
+            {
+                var repo = uow.GetRepository<Car>();
+                return Ok(await repo.QueryAsync(x => x.Id == id));
+            }
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task<IActionResult> Post([FromBody]Car car)
         {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
+            using(var uow = _uowProvider.CreateUnitOfWork())
+            {
+                var repo = uow.GetRepository<Car>();
+                repo.Add(car);
+                await uow.SaveChangesAsync();
+                return Ok(car.Id);
+            }
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            using (var uow = _uowProvider.CreateUnitOfWork())
+            {
+                var repo = uow.GetRepository<Car>();
+                repo.Remove(id);
+                return NoContent();
+            }
         }
     }
 }

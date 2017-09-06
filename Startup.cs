@@ -12,6 +12,11 @@ using System.IO;
 using Microsoft.Extensions.PlatformAbstractions;
 using Swashbuckle.AspNetCore.Swagger;
 using Digipolis.Web;
+using Digipolis.DataAccess;
+using nCore2Test.DataAccess;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace nCore2Test
 {
@@ -27,6 +32,16 @@ namespace nCore2Test
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDataAccess<MyEntityContext>();
+
+            var connectionStr = GetConnectionString();
+
+            services.AddDbContext<MyEntityContext>(options =>
+            {
+                options.UseNpgsql(connectionStr, opt => opt.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "main"));
+                options.ConfigureWarnings(config => config.Throw(RelationalEventId.QueryClientEvaluationWarning));
+            });
+
             services.AddMvc();
 
             //var pathToDoc = Configuration["Swagger:FileName"];
@@ -71,6 +86,29 @@ namespace nCore2Test
 
             //Redirect to swagger UI.
             app.UseSwaggerUiRedirect();
+        }
+
+        private string GetConnectionString()
+        {
+            var configSection = Configuration.GetSection("DataAccess").GetSection("ConnectionString");
+
+            var host = configSection.GetValue<string>("Host");
+            var dbname = configSection.GetValue<string>("DbName");
+            var user = configSection.GetValue<string>("User");
+            var password = configSection.GetValue<string>("Password");
+
+            ushort port = 0;
+            try
+            {
+                port = configSection.GetValue<ushort>("Port");
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new InvalidOperationException("Database port must be a number from 0 to 65536.", ex.InnerException ?? ex);
+            }
+
+            var connectionString = new ConnectionString(host, port, dbname, user, password);
+            return connectionString.ToString();
         }
     }
 }
